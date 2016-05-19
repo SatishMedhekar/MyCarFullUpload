@@ -22,15 +22,17 @@ namespace MyCarsale.Client
         {
             client = new HttpClient(new AuthenticationHandler("fanier", "supersecretpassword"));
 
-            client.BaseAddress = new Uri("http://localhost:57047/");
+           //client.BaseAddress = new Uri("http://localhost:57047/");
+            client.BaseAddress = new Uri("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com");
+
 
         }
 
 
         public CarSearchInfo GetFillSearchCriteria()
         {
-
-            response = client.GetAsync("/api/Home").Result;
+            response = client.GetAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/Home").Result;
+            //response = client.GetAsync("/api/Home").Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -50,7 +52,7 @@ namespace MyCarsale.Client
         public CarCollection GetCarSearchResult(CarInfo carinfo)
         {
            
-            response = client.PostAsJsonAsync("/api/Home", carinfo).Result;
+            response = client.PostAsJsonAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/Home", carinfo).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -67,9 +69,9 @@ namespace MyCarsale.Client
 
         public void PostEnquiry(Enquiry enquiry)
         {
-            //client.PostAsync<Enquiry>("/api/Enquiry", enquiry, new JsonMediaTypeFormatter());
+            
 
-            response = client.PostAsJsonAsync("/api/Enquiry", enquiry).Result;
+            response = client.PostAsJsonAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/Enquiry", enquiry).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -85,7 +87,7 @@ namespace MyCarsale.Client
         {
             
 
-            response = client.PostAsJsonAsync("/api/CarMaintain", car).Result;
+            response = client.PostAsJsonAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/CarMaintain", car).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -99,9 +101,9 @@ namespace MyCarsale.Client
 
         public void DeleteCar(Car car )
         {
-            //client.PostAsync<Enquiry>("/api/Enquiry", enquiry, new JsonMediaTypeFormatter());
+           
 
-            response = client.PostAsJsonAsync("/api/CarDelete", car).Result;
+            response = client.PostAsJsonAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/CarDelete", car).Result;
             
         }
 
@@ -109,11 +111,11 @@ namespace MyCarsale.Client
 
         public EnquiryCollection GetEnquires()
         {
-            response = client.GetAsync("/api/Enquiry").Result;
+            response = client.GetAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/Enquiry").Result;
 
             if (response.IsSuccessStatusCode)
             {
-                //var result = response.Content.ReadAsAsync<JToken>().Result;
+               
 
                 EnquiryCollection enquiries = response.Content.ReadAsAsync<EnquiryCollection>().Result;
 
@@ -133,8 +135,8 @@ namespace MyCarsale.Client
             Car car = carRequest.car;
            
 
-            //client.PostAsync<Car>("/api/Car/", carRequest, new JsonMediaTypeFormatter());
-            response = client.PostAsJsonAsync("/api/Car", carRequest.car).Result;
+            
+            response = client.PostAsJsonAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/Car", carRequest.car).Result;
 
             if (response.IsSuccessStatusCode)
             {
@@ -152,8 +154,8 @@ namespace MyCarsale.Client
             Car car = carRequest.car;
 
 
-            //client.PostAsync<Car>("/api/Car/", carRequest, new JsonMediaTypeFormatter());
-            response = client.PutAsJsonAsync("/api/Car", carRequest.car).Result;
+            ;
+            response = client.PutAsJsonAsync("http://mycarsalewebhost-dev.us-west-2.elasticbeanstalk.com/api/Car", carRequest.car).Result;
 
             if (response.IsSuccessStatusCode)
             {
