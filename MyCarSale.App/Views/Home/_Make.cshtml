@@ -1,0 +1,172 @@
+﻿@model MyCarsale.Client.CustomCar
+<style>
+    #make h4 {margin-top:1px; font-family: Calibri; font-size:12px;}
+</style>
+
+  <div id="make">
+        <div class="form-group">
+            <label class="visible-md-inline visible-lg-inline">Make</label>
+
+            <div class="form-group">
+
+                <div class="col-xs-6">
+
+                    <div class="form-group">
+                        <label>Make</label>
+                        <div class="dropdown-toggle">
+
+                            @*@Html.DropDownList("CarMakeList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarMakeList, "id", "MakeType", Model.Dropdowncollection.CarMakeModelList.CarMakeList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                            @Html.DropDownListFor(x => x. car.CarSepcificInfo.CarMake.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarMakeList, "id", "MakeType", Model.car.CarSepcificInfo.CarMake != null ? Model.car.CarSepcificInfo.CarMake.id : 0), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })
+                            @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="form-group">
+                        <label>Model</label>
+                        <div class="dropdown-toggle">
+
+                            @*@Html.DropDownList("CarModelList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarModelList, "id", "ModelType", Model.Dropdowncollection.CarMakeModelList.CarModelList).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                            @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarModel.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarModelList, "id", "ModelType", Model.car.CarSepcificInfo.CarModel.id), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })
+
+                            @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+
+                        <div class="form-group">
+                            <label>Badge</label>
+                            <div class="dropdown-toggle">
+
+                                @*@Html.DropDownList("CarBadgeList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarBadgeList, "id", "BadgeType", Model.Dropdowncollection.CarMakeModelList.CarBadgeList).ToList(), "--- Please select Badge---", new { @class = "form-control dropdown-toggle" })*@
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarBadge.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarBadgeList, "id", "BadgeType", Model.car.CarSepcificInfo.CarBadge != null ? Model.car.CarSepcificInfo.CarBadge.id : 0), "--- Please select Badge---", new { @class = "form-control dropdown-toggle" })
+
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="form-group">
+                            <label>Series</label>
+                            <div class="dropdown-toggle">
+
+                                @*@Html.DropDownList("CarSeriesList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarSeriesList, "id", "SeriesType", Model.Dropdowncollection.CarMakeModelList.CarSeriesList).ToList(), "--- Please select Series---", new { @class = "form-control dropdown-toggle" })*@
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarSeries.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarSeriesList, "id", "SeriesType", Model.car.CarSepcificInfo.CarSeries != null ? Model.car.CarSepcificInfo.CarSeries.id : 0), "--- Please select Series---", new { @class = "form-control dropdown-toggle" })
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                        </div>
+                        <!--------------------------------------separator---------------------------------------------------------------> <hr>
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+
+                        <div class="form-group">
+                            <label>Price</label>
+                            <div class="dropdown-toggle">
+                                @Html.TextBoxFor(x => x.car.CarSepcificInfo.CarPrice, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                        </div>
+
+                        <br>
+
+
+                        <div class="form-group">
+                            <label>Location</label>
+                            <div class="dropdown-toggle">
+
+                                @*@Html.DropDownList("City", new SelectList(Model.Dropdowncollection.CarLocation.Select(x => x.CityName), "Name", Model.Dropdowncollection.CarLocation.Select(x => new { x.CityId, x.CityName })).ToList(), "--- City ---", new { @class = "form-control dropdown-toggle" })*@
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarLocation.City.CityId, new SelectList(Model.Dropdowncollection.CarLocation, "CityId", "CityName", Model.car.CarSepcificInfo.CarLocation.City != null ? Model.car.CarSepcificInfo.CarLocation.City.CityId : 0), "--- Please select City---", new { @class = "form-control dropdown-toggle" })
+
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!---->
+
+
+
+                <div class="dropdown">
+                    @Html.DropDownList("CarMakeList", new SelectList(Model.CarMakeList, "id", "MakeType", Model.CarMakeList).ToList(), "--- Please select Make---", new { @class = "btn btn-default dropdown-toggle" })
+                    @Html.DropDownListFor(x => x.CarMakeList, new SelectList(Model.CarMakeList, "id", "MakeType", Model.CarMakeList).ToList(), "Choose")
+                </div>
+            </div>
+    </div>
+
+
+
+    <div id="model">
+        <div class="form-group">
+            <label class="visible-md-inline visible-lg-inline">Model</label>
+
+            <div class="dropdown">
+                @Html.DropDownList("ModelType", new SelectList(Model.CarModelList, "id", "ModelType", Model.CarModelList).ToList(), "--- Please select Model ---", new { @class = "btn btn-default dropdown-toggle" })
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="series">
+        <div class="form-group">
+            <label class="visible-md-inline visible-lg-inline">Badge</label>
+
+            <div class="dropdown">
+                @Html.DropDownList("SeriesType", new SelectList(Model.CarBadgeList, "id", "BadgeType", Model.CarBadgeList).ToList(), "--- Please select Badge ---", new { @class = "btn btn-default dropdown-toggle" })
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="series">
+        <div class="form-group">
+            <label class="visible-md-inline visible-lg-inline">Series</label>
+
+            <div class="dropdown">
+                @Html.DropDownList("BadgeType", new SelectList(Model.CarSeriesList, "id", "SeriesType", Model.CarSeriesList).ToList(), "--- Please select Series ---", new { @class = "btn btn-default dropdown-toggle" })
+            </div>
+        </div>
+    </div>
+
+
+
+    
+
+
+
+

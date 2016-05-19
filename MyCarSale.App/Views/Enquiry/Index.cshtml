@@ -1,0 +1,185 @@
+﻿@model MyCarsale.Client.CarCollection
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<h2>CarList</h2>
+
+<div>
+
+    <div class="container" style="margin-top:50px;" background-color:white;">
+        <div class="row">
+            @foreach (var c in Model.cars)
+            {
+
+                <div id="tab-container" style="background-color:white; ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color:#b3d9ff" >
+                            <div class="col-xs-4">
+                                <h4>@c.CarSepcificInfo.CarMake.MakeType </h4>
+                            </div>
+                            <div class="col-xs-4">
+                                Price : @c.CarSepcificInfo.CarPrice.ToString();
+                            </div>
+                            <div>
+                                Kilometer : @c.CarSepcificInfo.intKilometer.ToString();
+                            </div>
+                        </div>
+
+                        <div class="well">
+                            <div class="row">
+
+                                <div class="col-md-4">
+
+                                    <img src="data:image;base64,@System.Convert.ToBase64String(Model.cars.Select(x=>x.imageData).FirstOrDefault())" class="img-rounded img-responsive" />
+                                    @*<img class="img-thumbnail" width="100" height="100" src="@Url.Action("GetImage","Enquiry", new { c})"/>*@
+                                    @*<img src="@Url.Content("~/Images/Image1.JPG")" alt="Demo" class="img-rounded img-responsive">*@
+                                    <h3>
+                                        Very versatile car
+                                    </h3>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    
+                                    <div class="container col-xs-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-xs-4">Model</th>
+                                                    <th class="col-xs-4">Badge</th>
+                                                    <th class="col-xs-4">Series</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@c.CarSepcificInfo.CarModel.ModelType</td>
+                                                    <td>@c.CarSepcificInfo.CarBadge.BadgeType</td>
+                                                    <td>@c.CarSepcificInfo.CarSeries.SeriesType</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-xs-4">Body</th>
+                                                    <th class="col-xs-4">Seat</th>
+                                                    <th class="col-xs-4">Color</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@c.CarDetailInfor.CarStyle.StyleBody.BodyType</td>
+                                                    <td>@c.CarDetailInfor.CarStyle.StyleSeats.SeatRange.minvalue</td>
+                                                    <td>@c.CarDetailInfor.CarStyle.StyleColor.Color </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-xs-4">Transmission</th>
+                                                    <th class="col-xs-4">Fuel</th>
+                                                    <th class="col-xs-4">Drive</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>@c.CarDetailInfor.CarEngine.EngineTransmission.TransmissionType</td>
+                                                    <td>@c.CarDetailInfor.CarEngine.EngineFuel.FuelType</td>
+                                                    <td>@c.CarDetailInfor.CarEngine.EngineDrive.DriveType</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <div class="input-group pull-right">
+                                        <span class="glyphicon glyphicon-eye-open input-group-addon">
+                                            @Html.ActionLink("Enquiry", "PostEnquiry", "Enquiry", new {  id= c.ID } , new { @class = "modal-link" })
+                                        </span>
+                                        <div id="modal-container" class="modal fade" tabindex="-1" role="dialog" style="border:5px solid;">
+
+                                            <a href="#close" title="close" class="modal-close-btn">X</a>
+
+                                            <div class="modal-content" style="width:400px !important; margin:10px auto !important; height:400px; ">
+
+                                                <div class="modal-body">
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script type="text/javascript">
+
+
+
+        //function updateSuccess(data) {
+        //    if (data.Success == true) {
+        //        //we update the table's info
+        //        var parent = linkObj.closest("tr");
+        //        parent.find(".carName").html(data.Object.Name);
+        //        parent.find(".carDescription").html(data.Object.Description);
+        //        //now we can close the dialog
+        //        $('#updateDialog').dialog('close');
+        //        //twitter type notification
+        //        $('#commonMessage').html("Update Complete");
+        //        $('#commonMessage').delay(400).slideDown(400).delay(3000).slideUp(400);
+        //    }
+        //    else {
+        //        $("#update-message").html(data.ErrorMessage);
+        //        $("#update-message").show();
+        //    }
+        //}
+
+
+        $(document).on("click", ".modalLink", function () {
+            var passedID = $(this).data('id');
+            $(".modal-body .hiddenid").val(passedID);
+        });
+
+
+        $(function () {
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                $(this).attr('data-target', '#modal-container');
+                $(this).attr('data-toggle', 'modal');
+            })
+
+            $('body').on('click', '.modal-close-btn', function () {
+                $('#modal-container').modal('hide');
+            });
+
+            $('#modal-container').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        });
+
+
+    </script>

@@ -1,0 +1,51 @@
+﻿@model MyCarsale.Client.Style
+
+<div id="make">
+    <div class="form-group">
+        <label>Body</label>
+
+        <div class="dropdown">
+            @Html.DropDownList("BodyType", new SelectList(Model.StyleBodyList, "id", "BodyType", Model.StyleBodyList).ToList(), "--- Body ---", new { @class = "btn btn-default dropdown-toggle" })
+        </div>
+    </div>
+</div>
+
+
+
+<div id="model">
+    <div class="form-group">
+        <label>Color</label>
+
+        <div class="dropdown">
+            @Html.DropDownList("ModelType", new SelectList(Model.StyleColorList, "id", "Color", Model.StyleColorList).ToList(), "--- Color ---", new { @class = "btn btn-default dropdown-toggle" })
+        </div>
+    </div>
+</div>
+
+
+
+<div id="model">
+    <div class="form-group">
+        <label>Door</label>
+
+        <div class="dropdown">
+            @Html.DropDownList("Range", new SelectList(Model.StyleDoorList, "DoorType", Model.StyleDoorList).ToList(), "--- Door ---", new { @class = "btn btn-default dropdown-toggle" })
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---->
+

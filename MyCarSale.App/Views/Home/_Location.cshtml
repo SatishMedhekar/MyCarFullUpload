@@ -1,0 +1,11 @@
+﻿@model IEnumerable<MyCarsale.Client.City>
+
+<div id="make">
+    <div class="form-group">
+        <label class="visible-md-inline visible-lg-inline">Make</label>
+
+        <div class="dropdown">
+         @Html.DropDownList("City", new SelectList(Model, "CityId", "CityName", Model).ToList(), "--- City ---", new { @class = "btn btn-default dropdown-toggle" })
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+﻿@model IEnumerable<MyCarsale.Client.Kilometers>
+
+
+
+<div class="container">
+    <label>Kilometer</label>
+    <div class="row">
+        <div class="col-md-2" id="model">
+            <div class="form-group">
+                
+
+                <div class="dropdown">
+                    @Html.DropDownList("Range", new SelectList(Model.Select(x => x.KilometerRange.minvalue.ToString()), "minvalue", Model.Select(x => new { x.Id, x.KilometerRange.minvalue })).ToList(), "--- Min ---", new { @class = "btn btn-default dropdown-toggle" })
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-2" id="model">
+            <div class="form-group">
+              
+                <div class="dropdown">
+                    @Html.DropDownList("Range", new SelectList(Model.Select(x => x.KilometerRange.minvalue.ToString()), "minvalue", Model.Select(x => new { x.Id, x.KilometerRange.minvalue })).ToList(), "--- Max ---", new { @class = "btn btn-default dropdown-toggle" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8" id="model">
+
+        </div>
+
+    </div>
+</div>

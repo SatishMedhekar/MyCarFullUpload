@@ -1,0 +1,165 @@
+﻿@model MyCarsale.Client.Car
+
+<style>
+    .modal-content {
+        width: 600px !important;
+        margin: 30px auto !important;
+    }
+</style>
+
+
+
+<div id="tab-container" style="background-color:white; border:solid;">
+    <div class="well">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Url.Content("~/Images/Image1.JPG")" alt="Demo" class="img-rounded img-responsive">
+                <h3>
+                    Very versatile car
+                </h3>
+            </div>
+
+
+            <div class="col-md-6">
+                <div>
+                    <strong> @Model.CarSepcificInfo.CarMake.MakeType</strong>
+                </div>
+                
+                <span class="lead"> Description</span>
+            </div>
+            <!---->
+
+            <div class="col-md-2">
+                <div class="input-group pull-right">
+                    <span class="glyphicon glyphicon-comment input-group-addon"></span>
+                   
+                    
+                                      @*   <h3>
+                             <a class="pull-right btn btn-success" data-toggle= "modal" data-target=".bootstrapmodal"> <span class="glyphicon glyphicon-eye-open"></span>Inquire</a>
+        @using (Html.BeginForm("PostEnquiry", "Enquiry"))
+        {
+
+            <span class="glyphicon glyphicon-comment input-group-addon"></span>
+            <input type="submit" class=" btn btn-success" value="Inquiry" />
+                          </h3>
+        }  *@
+
+                    @*
+    <div id="modal-container" class="modal fade" tabindex="-1" role="dialog" style="border:5px solid;">
+        <a href="#close" title="close" class="modal-close-btn">X</a>
+        <div class="modal-content" style="width:400px !important; height:200px; margin:50px auto !important;">
+            <div class="modal-body">
+                @Html.ActionLink("Checkout", "PostEnquiry", "Enquiry", null, new { @class = "img-btn-addnote modal-link modal-link" })
+
+            </div>
+        </div>
+    </div>
+                    *@
+                @*    @Html.ActionLink("","PostEnquiry", "Enquiry",  null , new { @class="img-btn-addnote modal-link", title="Demo" })  *@
+                                                            
+                </div>
+            </div>
+
+                <!---->
+
+            </div>
+    </div>
+
+</div>
+
+<div>
+    @Html.ActionLink("Enquiry", "PostEnquiry", "Enquiry", null, new { @class = "editLink" })
+    
+</div>
+
+
+<div id="updateDialog" title="Update Car"></div>
+
+<script type="text/javascript">
+   
+    var linkObj;
+    $(function () {
+        $(".editLink").button();
+
+        $('#updateDialog').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            modal: true,
+            buttons: {
+                "Update": function () {
+                    $("#update-message").html(''); //make sure there is nothing on the message before we continue                         
+                    $("#updateCarForm").submit();
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $(".editLink").click(function () {
+            //change the title of the dialog
+            linkObj = $(this);
+            var dialogDiv = $('#updateDialog');
+            var viewUrl = linkObj.attr('href');
+            $.get(viewUrl, function (data) {
+                dialogDiv.html(data);
+                //validation
+                var $form = $("#updateCarForm");
+                // Unbind existing validation
+                $form.unbind();
+                $form.data("validator", null);
+                // Check document for changes
+                $.validator.unobtrusive.parse(document);
+                // Re add validation with changes
+                $form.validate($form.data("unobtrusiveValidation").options);
+                //open dialog
+                dialogDiv.dialog('open');
+            });
+            return false;
+        });
+
+    });
+
+
+    function updateSuccess(data) {
+        if (data.Success == true) {
+            //we update the table's info
+            var parent = linkObj.closest("tr");
+            parent.find(".carName").html(data.Object.Name);
+            parent.find(".carDescription").html(data.Object.Description);
+            //now we can close the dialog
+            $('#updateDialog').dialog('close');
+            //twitter type notification
+            $('#commonMessage').html("Update Complete");
+            $('#commonMessage').delay(400).slideDown(400).delay(3000).slideUp(400);
+        }
+        else {
+            $("#update-message").html(data.ErrorMessage);
+            $("#update-message").show();
+        }
+    }
+
+
+
+</script>
+
+//<script type="" contextmenu="/javascript">
+    //$(function () {
+    //    $('body').on('click', '.modal-link', function (e) {
+    //        e.preventDefault();
+    //        $(this).attr('data-target', '#modal-container');
+    //        $(this).attr('data-toggle', 'modal');
+    //    })
+
+    //    $('body').on('click', '.modal-close-btn', function () {
+    //        $('#modal-container').modal('hide');
+    //    });
+
+    //    $('#modal-container').on('hidden.bs.modal', function () {
+    //        $(this).removeData('bs.modal');
+    //    });
+    //});
+
+//</script>
+

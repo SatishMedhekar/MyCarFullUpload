@@ -1,0 +1,98 @@
+﻿@model MyCarsale.Client.CarCollection
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="panel panel-default" style="margin-top:100px;">
+    <div class="panel-heading">
+        <h3>All CARS</h3>
+        <div class="panel-body">
+        <table class="table table-striped table-condensed table-bordered">
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Series</th>
+                <th>Photo</th>
+                <th class="text-right">Price</th>
+                <th >Total Enquiries</th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.cars)
+            {
+                <tr>
+                    <td>@Html.ActionLink(item.CarSepcificInfo.CarMake.MakeType, "Edit", new { item.ID }) </td>
+                    <td>@Html.DisplayFor(modelItem => item.CarSepcificInfo.CarModel.ModelType)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CarSepcificInfo.CarSeries.SeriesType)</td>
+                    <td>
+                        @{
+                            var base64 = item.imageData != null ? Convert.ToBase64String(item.imageData) : null;
+                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                        }
+                        <img src='@imgSrc' style="max-width:50px; max-height:50px;" /> 
+                    </td>
+                    <td class="text-right">@item.CarSepcificInfo.CarPrice.ToString("c")</td>
+                    <td class="text-right">
+                        @Html.ActionLink(@item.TotalInquiry.ToString(), "GetEnquiryDetail", "Dealer", null, new { @class = "modal-link" });
+                        
+                    </td>
+                    
+                    <td>0.00</td>
+                    <td>
+                        @using (Html.BeginForm("DelCar", "Dealer"))
+                        {
+                            @Html.Hidden("id", item.ID)
+                            <input type="submit" class="btn btn-default btn-xs" value="Delete" />
+                        }
+                        
+                    </td>
+                </tr>
+            }
+
+        </table>
+</div>
+        <div class="panel-footer">
+            @Html.ActionLink("Add a new CAR", "ADD", null,
+            new { @class = "btn btn-default" })
+        </div>
+    </div>
+
+    <!---->
+
+
+
+
+    <div class="container">
+        <div class="modal" id="mymodal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dissmiss="modal">x</button>
+                        <h4>Modal Window</h4>
+                    </div>
+                    <div class="modal-body">
+                        What a fantastic Window
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#mymodal" data-dissmiss="modal">Close Window</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+

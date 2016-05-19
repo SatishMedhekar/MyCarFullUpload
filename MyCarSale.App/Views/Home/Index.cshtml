@@ -1,0 +1,532 @@
+﻿@model MyCarsale.Client.CustomCar
+
+<script>
+    var selector;
+    var selectorID;
+
+    activateTab('#myTab a:first');
+
+    function activateTab(selectorID) {
+        $(selectorID).tab('show')
+            .closest('.disabled').removeClass('disabled');
+    }
+
+    function deactivateTab(selector) {
+        $(selector).off('click.twbstab')
+            .closest('li').addClass('disabled');
+    }
+
+    $('.btn-demo').on('click', function () {
+        selector = '#myTab a[href="' + $(this).data('activate') + '"]';
+        selectorID = $(selector).attr('href');
+    });
+
+    var val1 = $('#frmtype1').validate(
+    {
+        errorPlacement: function (error, element) { },
+        // prevent the standard error message from showing, rather you use the inline-text
+        rules: {
+            'Reg_type': {
+                required: true
+            }
+        }
+    });
+
+    // validate 1st form
+    $('#frmtype1').submit(function (e) {
+        // validate the first page
+        if (val1.form()) {
+            $('.help-inline').hide();
+            activateTab(selector);
+        } else {
+            $('.help-inline').show();
+        }
+        return false;
+    });
+
+    // validate 2nd form
+    $('#frmtype2').submit(function (e) {
+        // validate the second page
+        activateTab(selector);
+        return false;
+    });
+
+
+    // if 2nd or 3rd tab is clicked, validate as if the form was submitted
+    $('#myTab li:eq(1) a, #myTab li:eq(2) a').click(function (e) {
+        selectorID = $(this).attr('href');
+        // validate the first page
+        if (val1.form()) {
+            $('.help-inline').hide();
+            activateTab(this);
+            $(selectorID).tab('show');
+        } else {
+            $('.help-inline').show();
+        }
+        return false;
+    });
+
+    // re-position all tab-panes, except the active pane, so that they are prepared for the slide effect
+    $(".tab-pane").css("position", "relative");
+    $(".tab-pane").not(".active").animate({
+        left: "1000px"
+    });
+
+    // perform slide effect
+    $('a[data-toggle="tab"]').on('show', function (e) {
+        lastPane = $(e.relatedTarget).attr('href');
+        $(lastPane).animate({ left: "1000px" }, 300)
+        currPane = $(e.target).attr('href');
+        $(currPane).animate({ left: "0px" }, 300);
+    });
+
+
+
+</script>
+
+
+
+
+<style>
+
+   #tab-container {
+    overflow:hidden;
+}
+   .field-validation-error {
+    color: #ff0000;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+  
+</style>
+
+
+
+
+<!---->
+
+
+@using (Html.BeginForm("Index", "Home"))
+{
+<form>
+  
+<div id="exTab3" class="container" style="margin-top:100px;">
+    @Html.ValidationMessage("CustomError");
+    <ul class="nav nav-pills">
+        <li class="active">
+            <a href="#1b" data-toggle="tab">Make & Model</a>
+        </li>
+        <li>
+            <a href="#2b" data-toggle="tab">Engine</a>
+        </li>
+        <li>
+            <a href="#3b" data-toggle="tab">Extra</a>
+        </li>
+       
+    </ul>
+
+    <div class="tab-content clearfix">
+        <div class="tab-pane active" id="1b">
+            <!--SomeCodeHere-->
+
+            <div class="form-group">
+
+                <div class="col-xs-6">
+
+                    <div class="form-group">
+                        <label>Make</label>
+                        <div class="dropdown-toggle">
+
+                            @*@Html.DropDownList("CarMakeList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarMakeList, "id", "MakeType", Model.Dropdowncollection.CarMakeModelList.CarMakeList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                            @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarMake.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarMakeList, "id", "MakeType", Model.car.CarSepcificInfo.CarMake != null ? Model.car.CarSepcificInfo.CarMake.id : 0), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })
+                            @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                        </div>
+                       
+                    </div>
+
+                    <br>
+
+                    <div class="form-group">
+                        <label>Model</label>
+                        <div class="dropdown-toggle">
+
+                            @*@Html.DropDownList("CarModelList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarModelList, "id", "ModelType", Model.Dropdowncollection.CarMakeModelList.CarModelList).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                            @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarModel.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarModelList, "id", "ModelType", Model.car.CarSepcificInfo.CarModel.id), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })
+
+                            @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                        </div>
+                    </div>
+                </div> <!--1A Block-->
+
+
+
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+
+                        <div class="form-group">
+                            <label>Badge</label>
+                            <div class="dropdown-toggle">
+
+                                @*@Html.DropDownList("CarBadgeList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarBadgeList, "id", "BadgeType", Model.Dropdowncollection.CarMakeModelList.CarBadgeList).ToList(), "--- Please select Badge---", new { @class = "form-control dropdown-toggle" })*@
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarBadge.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarBadgeList, "id", "BadgeType", Model.car.CarSepcificInfo.CarBadge != null ? Model.car.CarSepcificInfo.CarBadge.id : 0), "--- Please select Badge---", new { @class = "form-control dropdown-toggle" })
+
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                        </div>
+
+                        <br>
+                        <div class="form-group">
+                            <label>Series</label>
+                            <div class="dropdown-toggle">
+
+                                @*@Html.DropDownList("CarSeriesList", new SelectList(Model.Dropdowncollection.CarMakeModelList.CarSeriesList, "id", "SeriesType", Model.Dropdowncollection.CarMakeModelList.CarSeriesList).ToList(), "--- Please select Series---", new { @class = "form-control dropdown-toggle" })*@
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarSeries.id, new SelectList(Model.Dropdowncollection.CarMakeModelList.CarSeriesList, "id", "SeriesType", Model.car.CarSepcificInfo.CarSeries != null ? Model.car.CarSepcificInfo.CarSeries.id : 0), "--- Please select Series---", new { @class = "form-control dropdown-toggle" })
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!--1B Block-->
+
+
+                <br>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+
+                        <div class="form-group">
+                            <label>Price</label>
+                            <div class="dropdown-toggle">
+                                @*@Html.TextBoxFor(x => x.car.CarSepcificInfo.CarPrice, new { @class = "form-control" })*@
+                                <div class="pull-left">
+                                    @Html.DropDownListFor(x => x.car.CarSepcificInfo.PriceRange.PriceRange.minvalue, new SelectList(Model.Dropdowncollection.PriceList.Select(x => x.PriceRange.minvalue).ToList(), "minvalue", Model.Dropdowncollection.PriceList.Select(x => x.PriceRange)), "--- Min---", new { @class = "form-control dropdown-toggle" })
+                                </div>
+                                <div class="col-xs-offset-1 pull-left">
+                                    @Html.DropDownListFor(x => x.car.CarSepcificInfo.PriceRange.PriceRange.maxvalue, new SelectList(Model.Dropdowncollection.PriceList.Select(x => x.PriceRange.maxvalue).ToList(), "maxvalue", Model.Dropdowncollection.PriceList.Select(x => x.PriceRange)), "--- Max---", new { @class = "form-control dropdown-toggle" })
+                                </div>
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                            <br />
+                        </div>
+
+                        <br />
+
+                        
+                        <div class="form-group">
+                            <label>Location</label>
+                            <div class="dropdown-toggle">
+
+                                @*@Html.DropDownList("City", new SelectList(Model.Dropdowncollection.CarLocation.Select(x => x.CityName), "Name", Model.Dropdowncollection.CarLocation.Select(x => new { x.CityId, x.CityName })).ToList(), "--- City ---", new { @class = "form-control dropdown-toggle" })*@
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.CarLocation.City.CityId, new SelectList(Model.Dropdowncollection.CarLocation, "CityId", "CityName", Model.car.CarSepcificInfo.CarLocation.City != null ? Model.car.CarSepcificInfo.CarLocation.City.CityId : 0), "--- Please select City---", new { @class = "form-control dropdown-toggle" })
+
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                        </div>
+                    </div>
+                <br />
+                </div><!--2A Block-->
+
+                <br>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+
+                        <div class="form-group">
+                            <label>Kilometer</label>
+                            <div class="dropdown-toggle">
+
+                                <div class="pull-left">
+                                    @Html.DropDownListFor(x => x.car.CarSepcificInfo.KilometerRange.KilometerRange.minvalue, new SelectList(Model.Dropdowncollection.CarKilometer.Select(x => x.KilometerRange.minvalue).ToList(), "minvalue", Model.Dropdowncollection.CarKilometer.Select(x => x.KilometerRange)), "--- Min---", new { @class = "form-control dropdown-toggle" })
+                                </div>
+                                <div class="col-xs-offset-1 pull-left">
+                                    @Html.DropDownListFor(x => x.car.CarSepcificInfo.KilometerRange.KilometerRange.maxvalue, new SelectList(Model.Dropdowncollection.CarKilometer.Select(x => x.KilometerRange.maxvalue).ToList(), "maxvalue", Model.Dropdowncollection.CarKilometer.Select(x => x.KilometerRange)), "--- Max---", new { @class = "form-control dropdown-toggle" })
+                                </div>
+                                @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                            </div>
+                            <br>
+                        </div>
+
+                        <br>
+
+                        <div class="form-group">
+                            <label>Year</label>
+                            <div class="dropdown-toggle">
+                            <div class="pull-left">
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.YearRange.YearRange.minvalue, new SelectList(Model.Dropdowncollection.YearList.Select(x => x.YearRange.minvalue).ToList(), "minvalue", Model.Dropdowncollection.YearList.Select(x => x.YearRange)), "--- Min---", new { @class = "form-control dropdown-toggle" })
+                            </div>
+                            <div class="col-xs-offset-1 pull-left">
+                                @Html.DropDownListFor(x => x.car.CarSepcificInfo.YearRange.YearRange.maxvalue, new SelectList(Model.Dropdowncollection.YearList.Select(x => x.YearRange.maxvalue).ToList(), "maxvalue", Model.Dropdowncollection.YearList.Select(x => x.YearRange)), "--- M---", new { @class = "form-control dropdown-toggle" })
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div><!--2B Block-->
+
+                <br>
+
+                
+
+            </div>
+        </div>
+<!------End for tab one------------------------------------------------------------------------------------------------------------------>
+       
+        <div class="tab-pane" id="2b">
+
+       <!--Somecode Tab2-->
+           <div class="col-xs-6 ">
+
+            <div class="form-group">
+                <label>Transmision</label>
+                <div class="dropdown-toggle">
+
+                    @*@Html.DropDownList("EngineTransmissionList", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTransmissionList.Select(x => x.TransmissionType), "TransmissionType", Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTransmissionList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                    @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineTransmission.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTransmissionList, "Id", "TransmissionType", Model.car.CarDetailInfor.CarEngine.EngineTransmission != null ? Model.car.CarDetailInfor.CarEngine.EngineTransmission.Id : 0), "--- Please select Transmission---", new { @class = "form-control dropdown-toggle" })
+                    @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                </div>
+            </div>
+
+
+            <br>
+
+
+            <div class="form-group">
+                <label>Fuel</label>
+                <div class="dropdown-toggle">
+
+                    @*@Html.DropDownList("EngineFuelList", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineFuelList.Select(x => x.FuelType), "FuelType", Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineFuelList.Select(x => x.FuelType)).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                    @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineFuel.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineFuelList, "Id", "FuelType", Model.car.CarDetailInfor.CarEngine.EngineFuel != null ? Model.car.CarDetailInfor.CarEngine.EngineFuel.Id : 0), "--- Please select Fuel---", new { @class = "form-control dropdown-toggle" })
+                    @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                </div>
+            </div><!--1A Block -Tab2-->
+          </div>
+
+
+
+
+            <div class="col-xs-6">
+
+                <div class="form-group">
+                    <label>Drive</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Drive", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineDriveList, "id", "DriveType", Model.Dropdowncollection.CarMakeModelList.CarMakeList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineDrive.id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineDriveList, "id", "DriveType", Model.car.CarDetailInfor.CarEngine.EngineDrive != null ? Model.car.CarDetailInfor.CarEngine.EngineDrive.id : 0), "--- Please select Drive---", new { @class = "form-control dropdown-toggle" })
+
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+
+
+                <br>
+
+
+                <div class="form-group">
+                    <label>Cylinder</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Cylinder", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineClindersList.Select(x => x.CylinderType.ToString()), "Id", Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineClindersList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineClinders.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineClindersList, "Id", "CylinderType", Model.car.CarDetailInfor.CarEngine.EngineClinders != null ? Model.car.CarDetailInfor.CarEngine.EngineClinders.Id : 0), "--- Please select Cylinder---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+            </div><!--1B Block-Tab2-->
+
+
+
+            <div class="col-xs-6">
+
+                <div class="form-group">
+                    <label>Size</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Size", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineSizeList.Select(x => x.SizeRange.minvalue.ToString()), "minvalue", Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineSizeList.Select(x => x.SizeRange.minvalue)).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineSize.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineSizeList.Select(x => new { x.Id, x.SizeRange.maxvalue }).ToList(), "Id", "maxvalue", Model.car.CarDetailInfor.CarEngine.EngineSize != null ? Model.car.CarDetailInfor.CarEngine.EngineSize.Id : 0), "--- Please select Size---", new { @class = "form-control dropdown-toggle" })
+                        @*@Html.DropDownListFor(x => x.Dropdowncollection.CarDetailInfor.CarStyle.StyleSeats.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleSeatsList.Select(x => new { x.Id, x.SeatRange.maxvalue }).ToList(), "Id", "maxvalue", Model.car.CarDetailInfor.CarStyle.StyleSeats != null ? Model.car.CarDetailInfor.CarStyle.StyleSeats.Id : 0), "--- Please select Seat---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+
+
+                <br>
+
+
+                <div class="form-group">
+                    <label>Power</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Range", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EnginePowerList.Select(x => x.PowerRange.minvalue.ToString()), "minvalue", Model.Dropdowncollection.CarDetailInfor.CarEngine.EnginePowerList.Select(x => x.PowerRange.minvalue)).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                        @*@Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EnginePower.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EnginePowerList, "Id", "PowerRange", Model.car.CarDetailInfor.CarEngine.EnginePower != null ? Model.car.CarDetailInfor.CarEngine.EnginePower.Id : 0), "--- Please select Cylinder---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EnginePower.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EnginePowerList.Select(x => new { x.Id, x.PowerRange.maxvalue }).ToList(), "Id", "maxvalue", Model.car.CarDetailInfor.CarEngine.EnginePower != null ? Model.car.CarDetailInfor.CarEngine.EnginePower.Id : 0), "--- Please select Power---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+            </div> <!--2A Block-Tab2-->
+
+            <br>
+
+            <div class="col-xs-6">
+
+                <div class="form-group">
+                    <label>Towing</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Towing", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList.Select(x => x.TowingRange.minvalue.ToString()), "minvalue", Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                        @*@Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineTowing.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList, "Id", "TowingRange", Model.car.CarDetailInfor.CarEngine.EngineTowing != null ? Model.car.CarDetailInfor.CarEngine.EngineTowing.Id : 0), "--- Please select Towing---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineTowing.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList.Select(x => new { x.Id, x.TowingRange.maxvalue }).ToList(), "Id", "maxvalue", Model.car.CarDetailInfor.CarEngine.EngineTowing != null ? Model.car.CarDetailInfor.CarEngine.EngineTowing.Id : 0), "--- Please select Towing---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+
+
+                <br>
+
+
+                <div class="form-group">
+                    <label>Body</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Body", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleBodyList.Select(x => x.BodyType.ToString()), "BodyType", Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleBodyList.Select(x => x.BodyType)).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarStyle.StyleBody.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleBodyList, "Id", "BodyType", Model.car.CarDetailInfor.CarStyle.StyleBody != null ? Model.car.CarDetailInfor.CarStyle.StyleBody.Id : 0), "--- Please select Body---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+            </div><!--2B Block-Tab2-->
+
+
+        </div>
+
+
+
+
+
+
+ 
+ <!-----------------------------------------------------End of Tab 2--------------------------------------------------->
+        <div class="tab-pane" id="3b">
+            <!--SomeCodeHere-->
+
+            <div class="col-xs-6">
+
+                <div class="form-group">
+                    <label>Seat</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Towing", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList.Select(x => x.TowingRange.minvalue.ToString()), "minvalue", Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarStyle.StyleSeats.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleSeatsList.Select(x => new { x.Id, x.SeatRange.maxvalue }).ToList(), "Id", "maxvalue", Model.car.CarDetailInfor.CarStyle.StyleSeats != null ? Model.car.CarDetailInfor.CarStyle.StyleSeats.Id : 0), "--- Please select Seat---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+
+
+                <br>
+
+
+                <div class="form-group">
+                    <label>Door</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Body", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleBodyList.Select(x => x.BodyType.ToString()), "BodyType", Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleBodyList.Select(x => x.BodyType)).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarStyle.StyleDoor.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarStyle.StyleDoorList, "Id", "DoorType", Model.car.CarDetailInfor.CarStyle.StyleDoor != null ? Model.car.CarDetailInfor.CarStyle.StyleDoor.Id : 0), "--- Please select Door---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+            </div><!--1A Block Tab3-->
+
+
+
+            <div class="col-xs-6">
+
+                <div class="form-group">
+                    <label>Induction</label>
+                    <div class="dropdown-toggle">
+
+                        @*@Html.DropDownList("Towing", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList.Select(x => x.TowingRange.minvalue.ToString()), "minvalue", Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineTowingList).ToList(), "--- Please select Make---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarEngine.EngineInduction.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarEngine.EngineInductionList, "Id", "InductionType", Model.car.CarDetailInfor.CarEngine.EngineInduction != null ? Model.car.CarDetailInfor.CarEngine.EngineInduction.Id : 0), "--- Please select Induction---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+                </div>
+
+
+
+
+
+
+                <br>
+
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <label>Green Rating</label>
+                        <div class="dropdown-toggle">
+                            @*@Html.DropDownList("GreenRating", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarExtra.ExtraGreenRatingList.Select(x => x.GreenRatingType.ToString()), "BodyType", Model.Dropdowncollection.CarDetailInfor.CarExtra.ExtraGreenRatingList).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                            @Html.DropDownListFor(x => x.car.CarDetailInfor.CarExtra.ExtraGreenRating.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarExtra.ExtraGreenRatingList, "Id", "GreenRatingType", Model.car.CarDetailInfor.CarExtra.ExtraGreenRating != null ? Model.car.CarDetailInfor.CarExtra.ExtraGreenRating.Id : 0), "--- Please select Rating---", new { @class = "form-control dropdown-toggle" })
+                            @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                        </div>
+
+                        <!----------------------------break-------------------------------------------------------------> <br>
+                    </div>
+                </div>
+
+            </div><!--1A Block Tab3-->
+
+
+
+
+            <br>
+
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <label>Ancap</label>
+                    <div class="dropdown-toggle">
+                        @*@Html.DropDownList("Ancap", new SelectList(Model.Dropdowncollection.CarDetailInfor.CarExtra.ExtraAncapList.Select(x => x.AncapType.ToString()), "AncapType", Model.Dropdowncollection.CarDetailInfor.CarExtra.ExtraAncapList).ToList(), "--- Please select Model---", new { @class = "form-control dropdown-toggle" })*@
+                        @Html.DropDownListFor(x => x.car.CarDetailInfor.CarExtra.ExtraAncap.Id, new SelectList(Model.Dropdowncollection.CarDetailInfor.CarExtra.ExtraAncapList, "Id", "AncapType", Model.car.CarDetailInfor.CarExtra.ExtraAncap != null ? Model.car.CarDetailInfor.CarExtra.ExtraAncap.Id : 0), "--- Please select Rating---", new { @class = "form-control dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => Model.Dropdowncollection.CarMakeModelList.CarMakeList)
+                    </div>
+
+                    <!----------------------------break-------------------------------------------------------------> <br>
+                </div>
+            </div>
+
+
+           
+
+            <!--form end-->
+
+        </div>
+            <!--End of code-->
+        </div>
+<!------------------------------End of Tab 3------------------------------------------------------------>
+        
+
+<div class="form-group">
+    <div class="input-group-addon">
+        <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-success pull-right">
+
+    </div>
+</div>
+
+
+</div>
+
+    </form>
+}
+
+

@@ -1,0 +1,33 @@
+﻿@model MyCarsale.Client.Car
+
+@{
+    ViewBag.Title = "EditUpload";
+}
+
+del MyCarsale.Client.Car
+
+@{
+    ViewBag.Title = "Upload";
+}
+
+<h2>Upload</h2>
+@using (Html.BeginForm("EditUpload", "Dealer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <table>
+        <tr>
+            <td>Select File :</td>
+            <td>
+                @Html.TextBoxFor(Model => Model.Photo, new { type = "file" })
+
+            </td>
+            <td>
+                <input type="submit" value="Upload" />
+            </td>
+        </tr>
+
+    </table>
+
+
+}
+

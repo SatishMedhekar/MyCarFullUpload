@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-content">
+        <form class="form-horizontal">
+            <div class="modal-header">
+                <div id="messenger"></div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="UserName" class="col-lg-3 control-label">User Name:</label>
+                <input class="form-control" id="UserName" placeholder="User Name" type="text" />
+            </div>
+
+            <div class="form-group">
+                <label for="Password" class="col-lg-3 control-label">Password:</label>
+                <input class="form-control" id="Password" placeholder="Password" type="password" />
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary btn-primary pull-left RbtnMargin" id="Login">Click To Login<span class="glyphicon glyphicon-ok"></span> </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .modal-dialog {
+        max-width: 380px;
+    }
+
+    .modal-dialog {
+        transform: translate(0, 50%) !important;
+        -ms-transform: translate(0, 50%) !important;
+        -webkit-transform: translate(0,50%) !important;
+    }
+
+    .RbtnMargin {
+        margin-left: 90px;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        $("#myModal").modal({
+           // backdrop: 'static',
+        });
+    });
+
+
+    $(function () {
+        $('#Login').click(function () {
+            var enq = "1";
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Dealer/Login',
+                data: "{id:" + JSON.stringify(enq) + "}",
+
+                success: function (data) {
+                    $('#modal-container').modal('hide');
+                 },
+                error: function () {
+                    alert("something went wrong");
+                }
+            });
+
+        });
+    });
+
+    @*$('#Login').click(function () {
+        var dataObject = { UserName: $("#UserName").val(), Password: $("#Password").val() };
+        $.ajax({
+            url: '@Url.Action("Login", "id")',
+            type: "POST",
+            data: dataObject,
+            datatype: "json",
+            success: function (result) {
+                if (result.toString()=="success")
+                {
+                    $("#myModal").modal('hide');
+                }
+                else
+                {
+                    $("#UserName").val("");
+                    $("#Password").val("");
+                    $("#UserName").focus();
+                    $("messanger").html('<div class = "failed">' + result+ '</div>')
+                }
+            },
+            error: function(result)
+            {
+                $("#UserName").val("");
+                $("#Password").val("");
+                $("#UserName").focus();
+                $("messanger").html('<div class = "failed"> Error: Please try again </div>');
+            }
+            
+        })
+    })*@
+
+</script>
